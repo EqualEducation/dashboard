@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import render_template
 from pymongo import Connection
+from pymongo import MongoClient
 import json
 from bson import json_util
 from bson.json_util import dumps
@@ -8,6 +9,7 @@ from bson.json_util import dumps
 app = Flask(__name__)
 
 MONGODB_HOST = 'localhost'
+connectionName= 'production-db-d1.meteor.io:27017/ee_survey_meteor_com'
 MONGODB_PORT = 27017
 #DBS_NAME = 'donorschoose'
 #COLLECTION_NAME = 'projects'
@@ -24,15 +26,18 @@ def index():
 
 @app.route("/donorschoose/projects")
 def donorschoose_projects():
-    connection = Connection(MONGODB_HOST, MONGODB_PORT)
-    collection = connection[DBS_NAME][COLLECTION_NAME]
+    #connection = Connection(MONGODB_HOST, MONGODB_PORT)
+    #collection = connection[DBS_NAME][COLLECTION_NAME]
+    client = MongoClient(MONGODB_HOST,MONGODB_PORT)
+    db = client[DBS_NAME]
+    collection = db[COLLECTION_NAME]
     projects = collection.find(fields=FIELDS, limit=50000)
-    #projects = collection.find(fields=FIELDS)
+    #projects=collection.find()
     json_projects = []
     for project in projects:
         json_projects.append(project)
     json_projects = json.dumps(json_projects, default=json_util.default)
-    connection.disconnect()
+    #connection.disconnect()
     return json_projects
 
 if __name__ == "__main__":
