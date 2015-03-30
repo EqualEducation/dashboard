@@ -1,3 +1,7 @@
+//DATATABLE METHOD
+jQuery(document).ready(function ($) {
+        $('#tabs').tab();
+    });
 $("#table-search").on('input',function(){
    text_filter(nameDim,this.value);//companyDimension is the dimension for the data table
 
@@ -34,11 +38,12 @@ function makeGraphs(error, projectsJson, statesJson) {
 	var ndx = crossfilter(donorschooseProjects);
 
 	//Define Dimensions
-	nameDim = ndx.dimension(function(d) { return d["name"]; });
+	nameDim = ndx.dimension(function(d) { return d["schoolDetails.INSTITUTION_NAME"]; });
   //console.log(nameDim)
 	//var typeDim = ndx.dimension(function(d) { return d["type"]; });
 	//var povertyLevelDim = ndx.dimension(function(d) { return d["poverty_level"]; });
-	var stateDim = ndx.dimension(function(d) { return d["Suburb"]; });
+	var stateDim = ndx.dimension(function(d) { return d["schoolDetails.PROVINCE_NAME"]; });
+  var nameDim = ndx.dimension(function(d) { return d["schoolDetails.INSTITUTION_NAME"]; });
 	//var totalDonationsDim  = ndx.dimension(function(d) { return d["total_donations"]; });
 
 
@@ -62,14 +67,45 @@ function makeGraphs(error, projectsJson, statesJson) {
     //Charts
 //  var yearRingChart = dc.pieChart("#pie-chart");
   //var rsaChart = dc.geoChoroplethChart("#map");
+  //console.log(projectsJson)
+  var datatable =$("#example").dataTable({
+            //"bPaginate": false,
+            //"bLengthChange": false,
+            //"bFilter": false,
+            "bSort": true,
+            //"bInfo": false,
+            "bAutoWidth": false,
+            "bDeferRender": true,
+            "aaData": nameDim.top(Infinity),
+            "bDestroy": true,
+            "aoColumns": [
+                { "mData": "schoolDetails.INSTITUTION_NAME", "sDefaultContent": " "},
+                { "mData": "schoolDetails.CLASSIFICATION", "sDefaultContent": " "},
+                { "mData": "schoolDetails.PROVINCE_NAME", "sDefaultContent": " "},
+                { "mData": "schoolDetails.TOWN_OR_CITY", "sDefaultContent": " "},
+                { "mData": "schoolDetails.DISTRICT_NAME", "sDefaultContent": " "},
+                { "mData": "schoolDetails.TELEPHONE_NO", "sDefaultContent": " " },
+                { "mData": "schoolDetails.NEIMS_NUMBER", "sDefaultContent": " " }
+            ]
+        });
+        //REFRESH THE TABLE
+
   var usChart = dc.geoChoroplethChart("#sa-map");
-  var totalDonationsByState = stateDim.group().reduceSum(function(d) {
-    return d["male"];
+  var studentPlot = dc.rowChart("#studentPlot");
+  var totalStudentsBySchool = nameDim.group().reduceSum(function(d) {
+    return d["schoolDetails.NEIMS_NUMBER"];
   });
-  var max_state = totalDonationsByState.top(1)[0].value;
+  var totalSchoolsByProvince = nameDim.group().reduceSum(function(d) {
+    return d["schoolDetails.PROVINCE_NAME"];
+  });
+  var totalDonationsByState = stateDim.group().reduceSum(function(d) {
+    return d["schoolDetails.NEIMS_NUMBER"];
+  });
+  //var max_state = totalDonationsByState.top(1)[0].value;
   //var spend = typeDim.group().reduceSum(function (d) {
     //        return +d.male;
       //  }),
+      /*
 	dataTable = dc.dataTable("#resource-type-row-chart");
 	dataTable
         .width(600)
@@ -90,15 +126,21 @@ function makeGraphs(error, projectsJson, statesJson) {
       function(d) { return d["teachers"]; },
     ])
     .sortBy(function(d){ return d["name"]; })
-    .order(d3.ascending);
+    .order(d3.ascending);*/
 
+    studentPlot
+          .width(300)
+          .height(330)
+          .dimension(stateDim)
+          .group(totalSchoolsByProvince)
+          .elasticX(true);
 
     usChart.width(1000)
       .height(330)
       .dimension(stateDim)
       .group(totalDonationsByState)
       .colors(["#E2F2FF", "#C4E4FF", "#9ED2FF", "#81C5FF", "#6BBAFF", "#51AEFF", "#36A2FF", "#1E96FF", "#0089FF", "#0061B5"])
-      .colorDomain([0, max_state])
+      //.colorDomain([0, max_state])
       .overlayGeoJson(statesJson["features"], "state", function (d) {
         return d.properties.name;
       })
@@ -109,7 +151,7 @@ function makeGraphs(error, projectsJson, statesJson) {
       .projection(d3.geo.azimuthalEqualArea()
           .clipAngle(180 - 1e-3)
           .scale(1500)
-          .translate([100, -600])
+          .translate([-200, -600])
           .precision(.1))
       /*.title(function (p) {
         return "State: " + p["key"]
@@ -125,6 +167,21 @@ function makeGraphs(error, projectsJson, statesJson) {
     console.log(nameDim)
     console.log(spend)
     */
+    function RefreshTable() {
+              dc.events.trigger(function () {
+                  alldata = nameDim.top(Infinity);
+                  //console.log("REFRESH TABLE!")
+                  //console.log(alldata)
+                  datatable.fnClearTable();
+                  datatable.fnAddData(alldata);
+                  datatable.fnDraw();
+              });
+          }
+
+          for (var i = 0; i < dc.chartRegistry.list().length; i++) {
+              var chartI = dc.chartRegistry.list()[i];
+              chartI.on("filtered", RefreshTable);
+          }
     dc.renderAll();
 
 };
