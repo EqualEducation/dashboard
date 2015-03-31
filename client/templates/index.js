@@ -1,6 +1,24 @@
 // DDP.connect("ee_survey.meteor.com").subscribe('schools');
 
 // Schools = new Mongo.Collection("schools");
+var map=function() {
+var output = {schoolName:this.schoolDetails.INSTITUTION_NAME,totalNumTeachers:Grades.findOne({school_id:this._id}).totalTeachersInSchool}
+emit(this._id,output);
+};
+
+var reduce = function(key,values){
+var outs={schoolName:null, totalNumTeachers:null}
+values.forEach(function(v){
+if (outs.schoolName==null){
+outs.schoolName=v.schoolName
+}
+if (outs.totalNumTeachers==null){
+outs.totalNumTeachers=v.totalNumTeachers
+}
+});
+return outs;
+};
+
 
 var provinceJSON = {"type": "FeatureCollection","features": [
 {"type": "Feature","id": "01","properties": {"name": "ZN"},"geometry": {"type": "Polygon","coordinates": [ [ [28.871188, -28.764598], [28.973961, -28.574980], [29.133241, -28.565499], [29.215156, -28.518095], [29.249666, -28.425561], [29.414634, -28.374364], [29.486689, -28.271212], [29.617146, -28.242011], [29.663033, -28.174127], [29.617904, -28.045566], [29.727883, -27.811957], [29.678582, -27.638646], [29.780217, -27.588587], [29.705887, -27.473678], [29.758601, -27.442581], [29.916742, -27.356494], [30.141250, -27.411484], [30.201169, -27.356115], [30.426056, -27.270029], [30.432124, -27.323501], [30.526933, -27.315916], [30.716931, -27.284060], [30.825392, -27.352702], [30.923614, -27.305677], [30.940680, -27.366355], [31.099201, -27.332603], [31.166325, -27.368251], [31.274028, -27.243103], [31.504225, -27.315158], [31.977891, -27.317433], [31.974098, -27.150190], [32.015056, -26.824426], [32.104935, -26.803947], [32.346887, -26.864246], [32.944943, -26.871831], [32.863786, -27.204421], [32.767081, -27.445236], [32.670755, -27.765311], [32.615007, -28.143030], [32.487963, -28.377398], [32.470898, -28.485480], [32.003679, -28.884057], [31.768932, -28.963318], [31.340015, -29.382753], [31.126885, -29.653907], [31.038523, -29.823046], [31.060518, -29.877277], [30.893275, -30.046037], [30.707829, -30.367250], [30.404440, -30.827263], [30.192826, -31.085523], [30.094983, -30.864808], [29.973249, -30.835986], [29.923569, -30.768482], [29.670997, -30.671777], [29.601976, -30.689601], [29.512097, -30.618683], [29.345613, -30.672535], [29.259905, -30.620959], [29.135895, -30.603135], [29.197331, -30.433995], [29.304276, -30.376352], [29.300484, -30.318328], [29.156753, -30.277750], [29.102902, -30.176494], [29.104039, -30.074859], [29.013781, -30.002425], [29.168889, -29.912167], [29.101385, -29.846180], [29.177232, -29.676282], [29.281143, -29.643288], [29.318687, -29.581852], [29.294416, -29.488560], [29.399464, -29.446844], [29.455591, -29.341416], [29.408945, -29.212855], [29.344096, -29.184033], [29.307689, -29.076330], [29.259147, -29.090362], [29.017574, -28.880644], [28.984580, -28.915913], [28.948932, -28.804039], [28.871188, -28.764598]]]}},
@@ -16,9 +34,9 @@ var provinceJSON = {"type": "FeatureCollection","features": [
 
 Template.dashboard.rendered = function(){
 	var remote = DDP.connect('http://ee_survey.meteor.com/');
-	Schools = new Meteor.Collection('schools', remote); 
-
-	remote.subscribe('schools', function() {
+	Schools = new Meteor.Collection('schools', remote);
+	Grades 	= new Meteor.Collection('grades', remote);
+	var schools = remote.subscribe('schools', function() {
 	  var schools = Schools.find().fetch();
 
 
@@ -26,11 +44,22 @@ Template.dashboard.rendered = function(){
 	  // var json = Schools.find({'_id' : this.params._id }).fetch(); // what ever data you want to return
       // this.response.setHeader('Content-Type', 'application/json');
       // this.response.end(JSON.stringify(json));
+			console.log(schools);
+			//makeGraphs(null, schools, provinceJSON);
+			//console.log(schools.count())
+	  	return schools;
 
-      console.log(provinceJSON);
-	  	makeGraphs(null, schools, provinceJSON);
-        
 	});
+	var grades = remote.subscribe('grades', function() {
+	  var grades = Grades.find().fetch();
+		console.log("GRADES")
+		console.log(grades)
+
+			return grades;
+
+	});
+	var schoolGrades=Schools.mapReduce(map,reduce,{out:'schoolGrades'});
+	console.log(schoolGrades);
 
 }
 
@@ -245,8 +274,3 @@ function makeGraphs(error, projectsJson, statesJson) {
     dc.renderAll();
 
 };
-
-
-
-
-

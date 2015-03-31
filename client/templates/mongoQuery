@@ -1,0 +1,17 @@
+var map=function() {
+var output = {schoolName:this.schoolDetails.INSTITUTION_NAME,totalNumTeachers:Grades.findOne({school_id:this._id}).totalTeachersInSchool}
+emit(this._id,output);
+};
+
+var reduce = function(key,values){
+var outs={schoolName:null, totalNumTeachers:null}
+values.forEach(function(v){
+if (outs.schoolName==null){
+outs.schoolName=v.schoolName
+}
+if (outs.totalNumTeachers==null){
+outs.totalNumTeachers=v.totalNumTeachers
+}
+});
+return outs;
+};
