@@ -1,0 +1,78 @@
+<template name="dashboard">
+
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="./">Equal Education Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+
+    <div class="row">
+      <ul id="tabs" class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#SchoolInfo">School Information</a></li>
+        <li role="presentation"><a href="#SchoolFeatures">Key School Features</a></li>
+        <li role="presentation"><a href="#">Norms and Standards Compliance</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="SchoolInfo">
+          <div class="col-sm-6">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+              Distribution of Schools
+              </div>
+              <div class="chart-stage">
+              <div id="sa-map"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" id="SchoolFeatures" >
+        <div class="col-sm-12">
+        <div class="chart-wrapper">
+        <div class="chart-title">
+        School Features
+        </div>
+        <div class="chart-stage">
+        <div id="sa-map"></div>
+        </div>
+        </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <!-- Resources Pie -->
+    <div class="col-sm-12">
+    <div class="chart-wrapper">
+    <div class="chart-title">
+    School Information
+    </div>
+    <table id="example" class="display" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Province</th>
+    <th>City</th>
+    <th>District</th>
+    <th>Telephone</th>
+    <th>NEIMS</th>
+    <th>ID</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    </tbody>
+    </table>
+    </div>
+    </div>
+
+
+  <!-- Resources Pie -->
+
+  </div>
+
+</template>
+
