@@ -19,7 +19,7 @@ DBS_NAME = 'ee_survey_meteor_com'
 SCHOOL_COLLECTION_NAME = 'schools'
 GRADES_COLLECTION_NAME='grades'
 #FIELDS = {'schoolDetails': True,'schoolDetails.INSTITUTION_NAME':True,'_id':False}
-SCHOOL_FIELDS = {'schoolDetails.INSTITUTION_NAME': True, 'schoolDetails.PROVINCE_NAME': True, 'schoolDetails.CLASSIFICATION': True,'schoolDetails.principalCooperative':True,'schoolDetails.DISTRICT_NAME':True,'schoolDetails.TOWN_OR_CITY':True,'schoolDetails.NEIMS_NUMBER':True,'schoolDetails.TELEPHONE_NO':True, '_id': False}
+SCHOOL_FIELDS = {'schoolDetails.INSTITUTION_NAME': True, 'schoolDetails.PROVINCE_NAME': True, 'schoolDetails.CLASSIFICATION': True,'schoolDetails.principalCooperative':True,'schoolDetails.DISTRICT_NAME':True,'schoolDetails.TOWN_OR_CITY':True,'schoolDetails.NEIMS_NUMBER':True,'schoolDetails.TELEPHONE_NO':True, '_id': True}
 #FIELDS = {'name': True, 'type': True, 'Suburb': True,'District':True,'EMIS':True,'male':True,'female':True,'total':True,'teachers':True, '_id': False}
 
 

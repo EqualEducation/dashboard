@@ -26,7 +26,7 @@ queue()
 function makeGraphs(error, projectsJson, statesJson) {
 
 	//Clean projectsJson data
-	var donorschooseProjects = projectsJson;
+	var schools = projectsJson;
 	//var dateFormat = d3.time.format("%Y-%m-%d");
 	//donorschooseProjects.forEach(function(d) {
 	//	d["date_posted"] = dateFormat.parse(d["date_posted"]);
@@ -35,15 +35,30 @@ function makeGraphs(error, projectsJson, statesJson) {
 	//});
 
 	//Create a Crossfilter instance
-	var ndx = crossfilter(donorschooseProjects);
+	var ndx = crossfilter(schools);
 
 	//Define Dimensions
-	nameDim = ndx.dimension(function(d) { return d["schoolDetails.INSTITUTION_NAME"]; });
-  //console.log(nameDim)
+  console.log("SCHOOLS")
+  console.log(schools)
+	nameDim = ndx.dimension(function(d) { return
+
+    d["schoolDetails"]["INSTITUTION_NAME"];
+    });
+
 	//var typeDim = ndx.dimension(function(d) { return d["type"]; });
 	//var povertyLevelDim = ndx.dimension(function(d) { return d["poverty_level"]; });
-	var stateDim = ndx.dimension(function(d) { return d["schoolDetails.PROVINCE_NAME"]; });
-  var nameDim = ndx.dimension(function(d) { return d["schoolDetails.INSTITUTION_NAME"]; });
+	var stateDim = ndx.dimension(
+    function(d) {
+      // console.log("DATA")
+        // console.log(d);
+        // console.log(d["_id"]);
+        // console.log(d["schoolDetails"]["PROVINCE_NAME"]);
+
+        return d["schoolDetails"]["PROVINCE_NAME"];
+    });
+  console.log("STATE DIM")
+  console.log(stateDim)
+  var nameDim = ndx.dimension(function(d) { return d["schoolDetails"]["INSTITUTION_NAME"]; });
 	//var totalDonationsDim  = ndx.dimension(function(d) { return d["total_donations"]; });
 
 
@@ -85,7 +100,8 @@ function makeGraphs(error, projectsJson, statesJson) {
                 { "mData": "schoolDetails.TOWN_OR_CITY", "sDefaultContent": " "},
                 { "mData": "schoolDetails.DISTRICT_NAME", "sDefaultContent": " "},
                 { "mData": "schoolDetails.TELEPHONE_NO", "sDefaultContent": " " },
-                { "mData": "schoolDetails.NEIMS_NUMBER", "sDefaultContent": " " }
+                { "mData": "schoolDetails.NEIMS_NUMBER", "sDefaultContent": " " },
+                { "mData": "_id", "sDefaultContent": " " }
             ]
         });
         //REFRESH THE TABLE
@@ -93,13 +109,13 @@ function makeGraphs(error, projectsJson, statesJson) {
   var usChart = dc.geoChoroplethChart("#sa-map");
   var studentPlot = dc.rowChart("#studentPlot");
   var totalStudentsBySchool = nameDim.group().reduceSum(function(d) {
-    return d["schoolDetails.NEIMS_NUMBER"];
+    return d["schoolDetails"]["NEIMS_NUMBER"];
   });
   var totalSchoolsByProvince = nameDim.group().reduceSum(function(d) {
-    return d["schoolDetails.PROVINCE_NAME"];
+    return d["schoolDetails"]["PROVINCE_NAME"];
   });
   var totalDonationsByState = stateDim.group().reduceSum(function(d) {
-    return d["schoolDetails.NEIMS_NUMBER"];
+    return d["schoolDetails"]["NEIMS_NUMBER"];
   });
   //var max_state = totalDonationsByState.top(1)[0].value;
   //var spend = typeDim.group().reduceSum(function (d) {
