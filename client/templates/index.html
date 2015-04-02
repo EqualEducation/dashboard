@@ -1,23 +1,27 @@
 <template name="dashboard">
 
-  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
+  <!-- <div class="navbar navbar-default" role="navigation">
       <div class="navbar-header">
         <a class="navbar-brand" href="./">Equal Education Dashboard</a>
       </div>
-    </div>
-  </div>
-
+    </div> -->
+    <h1>Equal Education Dashboard</h1>
   <div class="container-fluid">
 
     <div class="row">
-      <ul id="tabs" class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="#SchoolInfo">School Information</a></li>
-        <li role="presentation"><a href="#SchoolFeatures">Key School Features</a></li>
-        <li role="presentation"><a href="#">Norms and Standards Compliance</a></li>
+       <ul class="nav nav-tabs" id="myTab">
+        <li class="active"><a data-toggle="tab" href="#SchoolInfo">School Information</a></li>
+        <li ><a data-toggle="tab" href="#SchoolFeatures">Key School Features</a></li>
+        <li ><a data-toggle="tab" href="#NormsAndStands">Norms and Standards Compliance</a></li>
       </ul>
+      <!-- <ul class="nav nav-tabs">
+    <li class="active"><a href="#a">Home</a></li>
+    <li><a href="#Test">Profile</a></li>
+    <li><a href="#Test2">Messages</a></li>
+</ul> -->
       <div class="tab-content">
-        <div class="tab-pane active" id="SchoolInfo">
+        <div id="SchoolInfo" class="tab-pane fade in active">
+          <p>This is the basic school information</p>
           <div class="col-sm-6">
             <div class="chart-wrapper">
               <div class="chart-title">
@@ -26,28 +30,54 @@
               <div class="chart-stage">
               <div id="sa-map"></div>
               </div>
-            </div>
           </div>
         </div>
-        <div class="tab-pane" id="SchoolFeatures" >
-        <div class="col-sm-12">
+        <div class="col-sm-6">
         <div class="chart-wrapper">
         <div class="chart-title">
         School Features
         </div>
         <div class="chart-stage">
-        <div id="sa-map"></div>
-        </div>
-        </div>
+
         </div>
         </div>
       </div>
+    </div>
+    <div id="SchoolFeatures" class="tab-pane fade">
+      <h3>Key School Features</h3>
+            <p>These are the key school features (graphs, tables, etc)</p>
+            <div class="col-sm-6">
+            <div class="chart-wrapper">
+            <div class="chart-title">
+            KSFs
+            </div>
+            <div class="chart-stage">
+
+            </div>
+            </div>
+          </div>
+              </div>
+              <div id="NormsAndStands" class="tab-pane fade">
+                <h3>Norms and Standards Compliance</h3>
+                      <p>This is the norms and standards compliance (graphs, tables, etc)</p>
+                      <div class="col-sm-6">
+                      <div class="chart-wrapper">
+                      <div class="chart-title">
+                      Norms and Standards
+                      </div>
+                      <div class="chart-stage">
+
+                      </div>
+                      </div>
+                    </div>
+                        </div>
+  </div>
     </div>
     <!-- Resources Pie -->
     <div class="col-sm-12">
     <div class="chart-wrapper">
     <div class="chart-title">
-    School Information
+    Surveyed Schools
     </div>
     <table id="example" class="display" cellspacing="0" width="100%">
     <thead>
@@ -59,7 +89,6 @@
     <th>District</th>
     <th>Telephone</th>
     <th>NEIMS</th>
-    <th>ID</th>
     </tr>
     </thead>
 
@@ -75,4 +104,3 @@
   </div>
 
 </template>
-
