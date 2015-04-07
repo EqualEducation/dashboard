@@ -27,7 +27,8 @@ Template.dashboard.rendered = function(){
       // this.response.setHeader('Content-Type', 'application/json');
       // this.response.end(JSON.stringify(json));
 
-      console.log(schools);
+      console.log(schools)
+			//pause here!
 	  	makeGraphs(null, schools, provinceJSON);
 
 	});
@@ -46,21 +47,67 @@ Template.dashboard.rendered = function(){
 			console.log(grades);
 
 	});
-	Versions = new Meteor.Collection('versions', remote);
+	Versions = new Meteor.Collection('surveyVersions', remote);
 	console.log('Getting versions');
-	remote.subscribe('versions', function() {
+	remote.subscribe('surveyVersions', function() {
 		console.log('SUBSCRIBED TO VERSIONS DB, list of versions:')
 		var versions = Versions.find().fetch();
+// 		var grades = Grades.find().fetch();
+//
+// 		// console.log(JSON.stringify(schools));
+// 		// var json = Schools.find({'_id' : this.params._id }).fetch(); // what ever data you want to return
+// 			// this.response.setHeader('Content-Type', 'application/json');
+// 			// this.response.end(JSON.stringify(json));
+//
+// 			console.log(versions);
+// 			mapVersions = function() {
+//     var values = {
+//         name: this.name
+//     };
+//     emit(this._id, values);
+// };
+// mapGrades = function() {
+//     var values = {
+//         gradeId: this._id,
+//         totalTeachersInSchool: this.totalTeachersInSchool
+//     };
+//     emit(this.versionId, values);
+// };
+// reduce = function(k, values) {
+//     var result = {}, gradeFields = {
+//         "gradeId": '',
+//         "totalTeachersInSchool": ''
+//     };
+//     values.forEach(function(value) {
+//         var field;
+//         if ("grade" in value) {
+//             if (!("grades" in result)) {
+//                 result.grades = [];
+//             }
+//             result.grades.push(value);
+//         } else if ("grades" in value) {
+//             if (!("grades" in result)) {
+//                 result.grades = [];
+//             }
+//             result.grades.push.apply(result.grades, value.grades);
+//         }
+//         for (field in value) {
+//             if (value.hasOwnProperty(field) && !(field in gradeFields)) {
+//                 result[field] = value[field];
+//             }
+//         }
+//     });
+//     return result;
+// };
+// var versions_grades
+// Versions.mapReduce(mapVersions, reduce, {"out": {"reduce": "versions_grades"}});
+// Grades.mapReduce(mapGrades, reduce, {"out": {"reduce": "versions_grades"}});
+// console.log(versions_grades)
+			//LINK VERSIONS AND GRADES
 
-
-		// console.log(JSON.stringify(schools));
-		// var json = Schools.find({'_id' : this.params._id }).fetch(); // what ever data you want to return
-			// this.response.setHeader('Content-Type', 'application/json');
-			// this.response.end(JSON.stringify(json));
-
-			console.log(versions);
 
 	});
+
 
 }
 
