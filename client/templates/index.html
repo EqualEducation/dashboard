@@ -22,30 +22,108 @@
         <div id="SchoolInfo" class="tab-pane fade in active">
           <p>This is the basic school information</p>
           <div class="col-sm-12">
-            <div class="chart-wrapper">
-              <div class="chart-title">
-              Distribution of Schools
-              </div>
-              <div class="chart-stage">
-              <div id="sa-map"></div>
-              </div>
+          <div class="chart-wrapper">
+          <div class="chart-title">
+          Surveyed Schools
           </div>
-        </div>
+          <table id="example" class="display" cellspacing="0" width="100%">
+
+          <thead>
+          <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Province</th>
+          <th>City</th>
+          <th>District</th>
+          <th>Telephone</th>
+          <th>NEIMS</th>
+          <th>Male Students</th>
+          <th>Female Students</th>
+          <th>Total Students</th>
+          <th>Teachers</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          </tbody>
+          </table>
+          </div>
+          </div>
     </div>
     <div id="SchoolFeatures" class="tab-pane fade">
       <h3>Key School Features</h3>
-            <p>These are the key school features (graphs, tables, etc)</p>
+      <span>
+        <a href="javascript:nameDim.filterAll();provinceDim.filterAll(); dc.filterAll(); RefreshTable();dc.renderAll();">Reset All</a>
+      </span>
+      <br/>
+      <div class="col-sm-6">
+        <div class="chart-wrapper">
+          <p>Which feature would you like to analyse?</p>
+          <p>{{getSessionVariable "title"}}</p>
+          <div class="dropdown">
+              <a id="keyRatios" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="/page.html">
+                  Key Ratios <span class="caret"></span>
+              </a>
+          <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+            <li><a id="ts" href="#">Teachers/Student Ratio</a></li>
+            <li><a id="sd" href="#">Student/Desk Ratio</a></li>
+            <li><a id="sc" href="#">Student/Chair Ratio</a></li>
+            <li><a id="ne" href="#">Nutrition Existance</a></li>
+              </ul>
+          </div>
+          <div class="dropdown">
+              <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-info" data-target="#" href="/page.html">
+                  Sanitation <span class="caret"></span>
+              </a>
+      		<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                <li><a href="#">Students per Toilet</a></li>
+                <li><a href="#">Students per Working Toilet</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-submenu">
+                  <a tabindex="-1" href="#">Accessibility</a>
+                  <ul class="dropdown-menu">
+                    <li><a id="soap" tabindex="-1" href="#">Soap</a></li>
+                    <li><a id="sb" href="#">Sanitary Bin</a></li>
+                    <li><a id="tp" href="#">Toilet Paper</a></li>
+                    <li><a id="sp" href="#">Sanitation Pads</a></li>
+                  </ul>
+                </li>
+              </ul>
+          </div>
+          <div class="dropdown">
+              <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-success" data-target="#" href="/page.html">
+                  % Classrooms with <span class="caret"></span>
+              </a>
+          <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                <li><a href="#">Hole in ceiling/floor</a></li>
+                <li><a href="#">Broken windows</a></li>
+                <li><a href="#">Teacher without a chair</a></li>
+                <li><a href="#">Classroom mis-used</a></li>
+              </ul>
+          </div>
+      </div>
+    </div>
+            <div class="col-sm-6">
+              <div class="chart-wrapper">
+                <div class="chart-title">
+                Distribution of {{getSessionVariable "title"}} by Province
+                </div>
+                <div class="chart-stage">
+                <div id="sa-map"></div>
+                </div>
+            </div>
+          </div>
             <div class="col-sm-3">
             <div class="chart-wrapper">
             <div class="chart-title">
-            Teacher Student Ratio
+            Total {{getSessionVariable "title"}}
             </div>
             <div class="chart-stage">
               <div id="teacher-student-ratio"></div>
             </div>
             </div>
           </div>
-          <div class="col-sm-3">
+          <!-- <div class="col-sm-3">
           <div class="chart-wrapper">
           <div class="chart-title">
           Teacher Student Ratio
@@ -54,17 +132,27 @@
             <div id="chart"></div>
           </div>
           </div>
-        </div>
-        <div class="col-sm-3">
-        <div class="chart-wrapper">
-        <div class="chart-title">
-        Total Students By School
-        </div>
-        <div class="chart-stage">
-          <div id="studentPlot"></div>
-        </div>
-        </div>
+        </div> -->
+      <div class="col-sm-3">
+      <div class="chart-wrapper">
+      <div class="chart-title">
+      {{getSessionVariable "title"}} by Province
       </div>
+      <div class="chart-stage">
+        <div id="soapAccessibilityProvince"></div>
+      </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+    <div class="chart-wrapper">
+    <div class="chart-title">
+      {{getSessionVariable "title"}} by School
+    </div>
+    <div class="chart-stage">
+      <div id="soapAccessibilitySchool"></div>
+    </div>
+    </div>
+  </div>
               </div>
               <div id="NormsAndStands" class="tab-pane fade">
                 <h3>Norms and Standards Compliance</h3>
@@ -84,37 +172,7 @@
 
     </div>
     <!-- Resources Pie -->
-    <div class="col-sm-12">
-    <div class="chart-wrapper">
-    <div class="chart-title">
-    Surveyed Schools
-    </div>
-    <span>
-      <a href="javascript:nameDim.filterAll();dc.filterAll(); RefreshTable();dc.renderAll();">Reset All</a>
-    </span>
-    <table id="example" class="display" cellspacing="0" width="100%">
 
-    <thead>
-    <tr>
-    <th>Name</th>
-    <th>Type</th>
-    <th>Province</th>
-    <th>City</th>
-    <th>District</th>
-    <th>Telephone</th>
-    <th>NEIMS</th>
-    <th>Male Students</th>
-    <th>Female Students</th>
-    <th>Total Students</th>
-    <th>Teachers</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    </tbody>
-    </table>
-    </div>
-    </div>
 
 
   <!-- Resources Pie -->
