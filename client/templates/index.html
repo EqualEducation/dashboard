@@ -7,7 +7,6 @@
     </div> -->
     <h1>Equal Education Dashboard</h1>
   <div class="container-fluid">
-
     <div class="row">
        <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a data-toggle="tab" href="#SchoolInfo">School Information</a></li>
@@ -22,7 +21,7 @@
       <div class="tab-content">
         <div id="SchoolInfo" class="tab-pane fade in active">
           <p>This is the basic school information</p>
-          <div class="col-sm-6">
+          <div class="col-sm-12">
             <div class="chart-wrapper">
               <div class="chart-title">
               Distribution of Schools
@@ -32,30 +31,40 @@
               </div>
           </div>
         </div>
-        <div class="col-sm-6">
-        <div class="chart-wrapper">
-        <div class="chart-title">
-        School Features
-        </div>
-        <div class="chart-stage">
-
-        </div>
-        </div>
-      </div>
     </div>
     <div id="SchoolFeatures" class="tab-pane fade">
       <h3>Key School Features</h3>
             <p>These are the key school features (graphs, tables, etc)</p>
-            <div class="col-sm-6">
+            <div class="col-sm-3">
             <div class="chart-wrapper">
             <div class="chart-title">
-            KSFs
+            Teacher Student Ratio
             </div>
             <div class="chart-stage">
-
+              <div id="teacher-student-ratio"></div>
             </div>
             </div>
           </div>
+          <div class="col-sm-3">
+          <div class="chart-wrapper">
+          <div class="chart-title">
+          Teacher Student Ratio
+          </div>
+          <div class="chart-stage">
+            <div id="chart"></div>
+          </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+        <div class="chart-wrapper">
+        <div class="chart-title">
+        Total Students By School
+        </div>
+        <div class="chart-stage">
+          <div id="studentPlot"></div>
+        </div>
+        </div>
+      </div>
               </div>
               <div id="NormsAndStands" class="tab-pane fade">
                 <h3>Norms and Standards Compliance</h3>
@@ -72,6 +81,7 @@
                     </div>
                         </div>
   </div>
+
     </div>
     <!-- Resources Pie -->
     <div class="col-sm-12">
@@ -79,7 +89,11 @@
     <div class="chart-title">
     Surveyed Schools
     </div>
+    <span>
+      <a href="javascript:nameDim.filterAll();dc.filterAll(); RefreshTable();dc.renderAll();">Reset All</a>
+    </span>
     <table id="example" class="display" cellspacing="0" width="100%">
+
     <thead>
     <tr>
     <th>Name</th>
@@ -89,6 +103,10 @@
     <th>District</th>
     <th>Telephone</th>
     <th>NEIMS</th>
+    <th>Male Students</th>
+    <th>Female Students</th>
+    <th>Total Students</th>
+    <th>Teachers</th>
     </tr>
     </thead>
 

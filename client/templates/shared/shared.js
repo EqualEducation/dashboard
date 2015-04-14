@@ -1,3 +1,4 @@
+
 // //SCHOOL
 // Handlebars.registerHelper('setSelectedSchoolDoc',function(schoolId){
 //     Session.set("selectedSchoolId", schoolId);
@@ -122,7 +123,7 @@
 // 	var autoformType = "insert";
 // 	if (Session.get("selected_doc") != null) {
 // 		autoformType =  "update";
-// 	} 
+// 	}
 // 	return autoformType;
 // });
 
@@ -130,7 +131,7 @@
 // 	var autoformType = "insert";
 // 	if (Session.get("selectedSchoolId") != null) {
 // 		autoformType =  "update";
-// 	} 
+// 	}
 // 	return autoformType;
 // });
 
